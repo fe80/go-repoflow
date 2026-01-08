@@ -97,43 +97,25 @@ func WorkspaceCmd(u *factory.Utils) *cobra.Command {
 // --- Runners Implementation ---
 
 func (m *WorkspaceManager) workspaceList(cmd *cobra.Command, args []string) error {
-	resp, err := m.GetAPIClient().ListWorkspaces()
+	data, err := m.GetAPIClient().ListWorkspaces()
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
-
-	if err := m.HandleResponse(resp); err != nil {
-		return err
-	}
-
-	var workspaces []client.Workspaces
-	return factory.HandleOutput(m.Utils, resp, &workspaces)
+	return factory.HandleOutput(m.Utils, data)
 }
 
 func (m *WorkspaceManager) workspaceGet(cmd *cobra.Command, args []string) error {
-	resp, err := m.GetAPIClient().GetWorkspace(args[0])
+	data, err := m.GetAPIClient().GetWorkspace(args[0])
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
 
-	if err := m.HandleResponse(resp); err != nil {
-		return err
-	}
-
-	var workspace client.Workspace
-	return factory.HandleOutput(m.Utils, resp, &workspace)
+	return factory.HandleOutput(m.Utils, data)
 }
 
 func (m *WorkspaceManager) workspaceDelete(cmd *cobra.Command, args []string) error {
-	resp, err := m.GetAPIClient().DeleteWorkspace(args[0])
+	data, err := m.GetAPIClient().DeleteWorkspace(args[0])
 	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	if err := m.HandleResponse(resp); err != nil {
 		return err
 	}
 
@@ -141,9 +123,7 @@ func (m *WorkspaceManager) workspaceDelete(cmd *cobra.Command, args []string) er
 		fmt.Printf("Successfully deleted workspace '%s'\n", args[0])
 		return nil
 	}
-
-	var createdWorkspace client.Workspace
-	return factory.HandleOutput(m.Utils, resp, &createdWorkspace)
+	return factory.HandleOutput(m.Utils, data)
 }
 
 func (m *WorkspaceManager) workspaceCreate(cmd *cobra.Command, args []string) error {
@@ -157,13 +137,9 @@ func (m *WorkspaceManager) workspaceCreate(cmd *cobra.Command, args []string) er
 		Comments:       m.comments,
 	}
 
-	resp, err := m.GetAPIClient().CreateWorkspace(opts)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
+	data, err := m.GetAPIClient().CreateWorkspace(opts)
 
-	if err := m.HandleResponse(resp); err != nil {
+	if err != nil {
 		return err
 	}
 
@@ -172,6 +148,5 @@ func (m *WorkspaceManager) workspaceCreate(cmd *cobra.Command, args []string) er
 		return nil
 	}
 
-	var createdWorkspace client.Workspace
-	return factory.HandleOutput(m.Utils, resp, &createdWorkspace)
+	return factory.HandleOutput(m.Utils, data)
 }

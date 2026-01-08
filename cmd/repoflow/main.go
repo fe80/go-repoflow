@@ -26,7 +26,7 @@ func main() {
 	}
 	rootCmd := &cobra.Command{Use: "repoflow"}
 	rootCmd.PersistentFlags().BoolVar(&debug, "debug", false, "Enable debug logging")
-	rootCmd.PersistentFlags().StringVar(&output, "output", "text", "Define output (text, yaml, json)")
+	rootCmd.PersistentFlags().StringVarP(&output, "output", "o", "text", "Define output (text, yaml, json)")
 	rootCmd.RegisterFlagCompletionFunc("output", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		return []string{"text", "yaml", "json"}, cobra.ShellCompDirectiveNoFileComp
 	})

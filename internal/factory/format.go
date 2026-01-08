@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"net/http"
 	"os"
 	"reflect"
 	"strings"
@@ -13,11 +12,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func HandleOutput(u *Utils, resp *http.Response, data any) error {
-	if err := json.NewDecoder(resp.Body).Decode(data); err != nil {
-		return fmt.Errorf("failed to decode response: %w", err)
-	}
-
+func HandleOutput(u *Utils, data any) error {
 	switch u.Output {
 	case "yaml":
 		yamlData, err := yaml.Marshal(data)

@@ -179,43 +179,24 @@ func RepositoryCmd(u *factory.Utils) *cobra.Command {
 
 // --- Runners Implementation ---
 func (m *RepositoryManager) repositoryList(cmd *cobra.Command, args []string) error {
-	resp, err := m.GetAPIClient().ListRepositories(m.workspace)
+	data, err := m.GetAPIClient().ListRepositories(m.workspace)
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
-
-	if err := m.HandleResponse(resp); err != nil {
-		return err
-	}
-
-	var repositories []client.Repositories
-	return factory.HandleOutput(m.Utils, resp, &repositories)
+	return factory.HandleOutput(m.Utils, data)
 }
 
 func (m *RepositoryManager) repositoryGet(cmd *cobra.Command, args []string) error {
-	resp, err := m.GetAPIClient().GetRepository(m.workspace, args[0])
+	data, err := m.GetAPIClient().GetRepository(m.workspace, args[0])
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
-
-	if err := m.HandleResponse(resp); err != nil {
-		return err
-	}
-
-	var repository client.Repository
-	return factory.HandleOutput(m.Utils, resp, &repository)
+	return factory.HandleOutput(m.Utils, data)
 }
 
 func (m *RepositoryManager) repositoryDelete(cmd *cobra.Command, args []string) error {
-	resp, err := m.GetAPIClient().DeleteRepository(m.workspace, args[0])
+	data, err := m.GetAPIClient().DeleteRepository(m.workspace, args[0])
 	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	if err := m.HandleResponse(resp); err != nil {
 		return err
 	}
 
@@ -224,8 +205,7 @@ func (m *RepositoryManager) repositoryDelete(cmd *cobra.Command, args []string) 
 		return nil
 	}
 
-	var deletedRepository client.RepostotryDelete
-	return factory.HandleOutput(m.Utils, resp, &deletedRepository)
+	return factory.HandleOutput(m.Utils, data)
 }
 
 func (m *RepositoryManager) repositoryCreate(cmd *cobra.Command, args []string, store string) error {
@@ -264,13 +244,8 @@ func (m *RepositoryManager) repositoryCreate(cmd *cobra.Command, args []string, 
 		return fmt.Errorf("Unsuported store store type: %s", store)
 	}
 
-	resp, err := m.GetAPIClient().CreateRepository(m.workspace, store, opts)
+	data, err := m.GetAPIClient().CreateRepository(m.workspace, store, opts)
 	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	if err := m.HandleResponse(resp); err != nil {
 		return err
 	}
 
@@ -279,20 +254,7 @@ func (m *RepositoryManager) repositoryCreate(cmd *cobra.Command, args []string, 
 		return nil
 	}
 
-	switch store {
-	case "local":
-		var createdRepository client.RepositoryOptions
-		return factory.HandleOutput(m.Utils, resp, createdRepository)
-
-	case "remote":
-		var createdRepository client.RepositoryRemoteOptions
-		return factory.HandleOutput(m.Utils, resp, createdRepository)
-
-	case "virtual":
-		var createdRepository client.RepositoryVirtualOptions
-		return factory.HandleOutput(m.Utils, resp, createdRepository)
-
-	}
+	return factory.HandleOutput(m.Utils, data)
 
 	return nil
 }
@@ -300,26 +262,15 @@ func (m *RepositoryManager) repositoryCreate(cmd *cobra.Command, args []string, 
 func (m *RepositoryManager) repositoryDeleteContent(cmd *cobra.Command, args []string) error {
 	name := args[0]
 
-	resp, err := m.GetAPIClient().DeleteRepositoryContent(m.workspace, name)
+	data, err := m.GetAPIClient().DeleteRepositoryContent(m.workspace, name)
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
-
-	if err := m.HandleResponse(resp); err != nil {
-		return err
-	}
 
 	if m.Output == "text" || m.Output == "" {
-		fmt.Printf("Successfully delete content of repository '%s' workspace '%s'\n", args[0], m.workspace)
+		fmt.Printf("Successfully delete content on repository '%s' workspace '%s'\n", args[0], m.workspace)
 		return nil
 	}
 
-	if m.Output == "text" || m.Output == "" {
-		fmt.Printf("Successfully deleted repository '%s' workspace '%s'\n", name, m.workspace)
-		return nil
-	}
-
-	var deletedRepository client.RepostotryDelete
-	return factory.HandleOutput(m.Utils, resp, &deletedRepository)
+	return factory.HandleOutput(m.Utils, data)
 }

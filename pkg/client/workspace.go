@@ -1,8 +1,6 @@
 package client
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
 	"net/http"
 )
@@ -41,57 +39,34 @@ type WorkspaceOptions struct {
 
 // ListWorkspaces retrieves all available workspaces
 // GET /1/workspaces
-func (c *Client) ListWorkspaces() (*http.Response, error) {
-	u := fmt.Sprintf("%s%s", c.BaseURL, WorkspacesEndpoint)
-	req, err := http.NewRequest(http.MethodGet, u, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	c.setHeaders(req)
-	return c.HTTPClient.Do(req)
+func (c *Client) ListWorkspaces() ([]Workspaces, error) {
+	var ws []Workspaces
+	err := c.DoRequest(http.MethodGet, WorkspacesEndpoint, nil, &ws)
+	return ws, err
 }
 
 // CreateWorkspace creates a new workspace with the given options
 // POST /1/workspaces
-func (c *Client) CreateWorkspace(opts WorkspaceOptions) (*http.Response, error) {
-	payload, err := json.Marshal(opts)
-	if err != nil {
-		return nil, err
-	}
-
-	u := fmt.Sprintf("%s%s", c.BaseURL, WorkspacesEndpoint)
-	req, err := http.NewRequest(http.MethodPost, u, bytes.NewBuffer(payload))
-	if err != nil {
-		return nil, err
-	}
-
-	c.setHeaders(req)
-	return c.HTTPClient.Do(req)
+func (c *Client) CreateWorkspace(opts WorkspaceOptions) (Workspace, error) {
+	var ws Workspace
+	err := c.DoRequest(http.MethodPost, WorkspacesEndpoint, opts, &ws)
+	return ws, err
 }
 
 // GetWorkspace retrieves metadata for a specific workspace
 // GET /1/workspaces/:id
-func (c *Client) GetWorkspace(id string) (*http.Response, error) {
-	u := fmt.Sprintf("%s%s/%s", c.BaseURL, WorkspacesEndpoint, id)
-	req, err := http.NewRequest(http.MethodGet, u, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	c.setHeaders(req)
-	return c.HTTPClient.Do(req)
+func (c *Client) GetWorkspace(id string) (Workspace, error) {
+	var ws Workspace
+	endpoint := fmt.Sprintf("%s/%s", WorkspacesEndpoint, id)
+	err := c.DoRequest(http.MethodGet, endpoint, nil, &ws)
+	return ws, err
 }
 
 // DeleteWorkspace removes a workspace by its ID
 // DELETE /1/workspaces/:id
-func (c *Client) DeleteWorkspace(id string) (*http.Response, error) {
-	u := fmt.Sprintf("%s%s/%s", c.BaseURL, WorkspacesEndpoint, id)
-	req, err := http.NewRequest(http.MethodDelete, u, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	c.setHeaders(req)
-	return c.HTTPClient.Do(req)
+func (c *Client) DeleteWorkspace(id string) (Workspace, error) {
+	var ws Workspace
+	endpoint := fmt.Sprintf("%s/%s", WorkspacesEndpoint, id)
+	err := c.DoRequest(http.MethodDelete, endpoint, nil, &ws)
+	return ws, err
 }
