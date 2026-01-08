@@ -12,7 +12,6 @@ import (
 // WorkspaceManager handles the state and configuration for workspace commands
 type WorkspaceManager struct {
 	*factory.Utils
-	apiClient *client.Client
 	packageLimit   *int
 	bandwidthLimit *int
 	storageLimit   *int
@@ -21,10 +20,7 @@ type WorkspaceManager struct {
 
 // WorkspaceCmd initializes the parent command and its subcommands
 func WorkspaceCmd(u *factory.Utils) *cobra.Command {
-	m := &WorkspaceManager{
-		Utils: u,
-		apiClient: factory.GetClient(u.Cfg),
-	}
+	m := &WorkspaceManager{Utils: u}
 
 	// Main workspace command
 	var workspaceCmd = &cobra.Command{
@@ -101,7 +97,7 @@ func WorkspaceCmd(u *factory.Utils) *cobra.Command {
 // --- Runners Implementation ---
 
 func (m *WorkspaceManager) workspaceList(cmd *cobra.Command, args []string) error {
-	resp, err := m.apiClient.ListWorkspaces()
+	resp, err := m.GetAPIClient().ListWorkspaces()
 	if err != nil {
 		return err
 	}
@@ -116,7 +112,7 @@ func (m *WorkspaceManager) workspaceList(cmd *cobra.Command, args []string) erro
 }
 
 func (m *WorkspaceManager) workspaceGet(cmd *cobra.Command, args []string) error {
-	resp, err := m.apiClient.GetWorkspace(args[0])
+	resp, err := m.GetAPIClient().GetWorkspace(args[0])
 	if err != nil {
 		return err
 	}
@@ -131,7 +127,7 @@ func (m *WorkspaceManager) workspaceGet(cmd *cobra.Command, args []string) error
 }
 
 func (m *WorkspaceManager) workspaceDelete(cmd *cobra.Command, args []string) error {
-	resp, err := m.apiClient.DeleteWorkspace(args[0])
+	resp, err := m.GetAPIClient().DeleteWorkspace(args[0])
 	if err != nil {
 		return err
 	}
@@ -161,7 +157,7 @@ func (m *WorkspaceManager) workspaceCreate(cmd *cobra.Command, args []string) er
 		Comments:       m.comments,
 	}
 
-	resp, err := m.apiClient.CreateWorkspace(opts)
+	resp, err := m.GetAPIClient().CreateWorkspace(opts)
 	if err != nil {
 		return err
 	}
