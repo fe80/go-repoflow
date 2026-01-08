@@ -13,7 +13,7 @@ const (
 )
 
 type Repositories struct {
-	ID             string `json:"id"`
+	Id             string `json:"id"`
 	Name           string `json:"name"`
 	PackageType    string `json:"packageType"`
 	RepositoryType string `json:"repositoryType"`
@@ -21,12 +21,12 @@ type Repositories struct {
 }
 
 type UploadTargetLocalRepository struct {
-	ID   string `json:"id"`
+	Id   string `json:"id"`
 	Name string `json:"name"`
 }
 
 type ChildRepository struct {
-	ID   string `json:"id"`
+	Id   string `json:"id"`
 	Name string `json:"name"`
 }
 

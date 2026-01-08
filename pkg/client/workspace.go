@@ -13,12 +13,12 @@ const (
 )
 
 type Workspaces struct {
-	ID   string `json:"id"`
+	Id   string `json:"id"`
 	Name string `json:"name"`
 }
 
 type Workspace struct {
-	ID                  string `json:"id"`
+	Id                  string `json:"id"`
 	Name                string `json:"name"`
 	StorageUsageInByte  int    `json:"storageUsageInByte"`
 	StorageLimitInByte  *int   `json:"storageLimitInByte"`
