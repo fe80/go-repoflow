@@ -32,7 +32,7 @@ func WorkspaceCmd(u *factory.Utils) *cobra.Command {
 	var listCmd = &cobra.Command{
 		Use:          "list",
 		Short:        "List all workspaces",
-		RunE:         m.runList,
+		RunE:         m.workspaceList,
 		SilenceUsage: true,
 	}
 
@@ -41,7 +41,7 @@ func WorkspaceCmd(u *factory.Utils) *cobra.Command {
 		Use:          "get [name]",
 		Short:        "Get workspace metadata (workspace ID or name)",
 		Args:         cobra.ExactArgs(1),
-		RunE:         m.runGet,
+		RunE:         m.workspaceGet,
 		SilenceUsage: true,
 	}
 
@@ -50,7 +50,7 @@ func WorkspaceCmd(u *factory.Utils) *cobra.Command {
 		Use:          "delete [name]",
 		Short:        "Delete a workspace (workspace ID or name)",
 		Args:         cobra.ExactArgs(1),
-		RunE:         m.runDelete,
+		RunE:         m.workspaceDelete,
 		SilenceUsage: true,
 	}
 
@@ -65,7 +65,7 @@ func WorkspaceCmd(u *factory.Utils) *cobra.Command {
 		Use:          "create [name]",
 		Short:        "Create a new workspace",
 		Args:         cobra.ExactArgs(1),
-		RunE:         m.runCreate,
+		RunE:         m.workspaceCreate,
 		SilenceUsage: true,
 	}
 	createCmd.Flags().IntVarP(&pkgLim, "package-limit", "p", 0, "Maximum packages allowed")
@@ -96,7 +96,7 @@ func WorkspaceCmd(u *factory.Utils) *cobra.Command {
 
 // --- Runners Implementation ---
 
-func (m *WorkspaceManager) runList(cmd *cobra.Command, args []string) error {
+func (m *WorkspaceManager) workspaceList(cmd *cobra.Command, args []string) error {
 	apiClient := factory.GetClient(m.Cfg)
 	resp, err := apiClient.ListWorkspaces()
 	if err != nil {
@@ -112,7 +112,7 @@ func (m *WorkspaceManager) runList(cmd *cobra.Command, args []string) error {
 	return factory.HandleOutput(m.Utils, resp, &workspaces)
 }
 
-func (m *WorkspaceManager) runGet(cmd *cobra.Command, args []string) error {
+func (m *WorkspaceManager) workspaceGet(cmd *cobra.Command, args []string) error {
 	apiClient := factory.GetClient(m.Cfg)
 	resp, err := apiClient.GetWorkspace(args[0])
 	if err != nil {
@@ -128,7 +128,7 @@ func (m *WorkspaceManager) runGet(cmd *cobra.Command, args []string) error {
 	return factory.HandleOutput(m.Utils, resp, &workspace)
 }
 
-func (m *WorkspaceManager) runDelete(cmd *cobra.Command, args []string) error {
+func (m *WorkspaceManager) workspaceDelete(cmd *cobra.Command, args []string) error {
 	apiClient := factory.GetClient(m.Cfg)
 	resp, err := apiClient.DeleteWorkspace(args[0])
 	if err != nil {
@@ -149,7 +149,7 @@ func (m *WorkspaceManager) runDelete(cmd *cobra.Command, args []string) error {
 	return factory.HandleOutput(m.Utils, resp, &createdWorkspace)
 }
 
-func (m *WorkspaceManager) runCreate(cmd *cobra.Command, args []string) error {
+func (m *WorkspaceManager) workspaceCreate(cmd *cobra.Command, args []string) error {
 	apiClient := factory.GetClient(m.Cfg)
 	name := args[0]
 
