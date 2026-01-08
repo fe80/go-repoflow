@@ -1,10 +1,13 @@
 package factory
 
 import (
+	"encoding/json"
 	"bytes"
 	"fmt"
 	"io"
 	"net/http"
+
+	"repoflow/pkg/client"
 )
 
 // handleResponse processes the API response.
@@ -31,6 +34,11 @@ func (u *Utils) HandleResponse(resp *http.Response) error {
 		return nil
 	}
 
+	var apiErr client.APIError
+	if err := json.Unmarshal(body, &apiErr); err == nil && apiErr.Message != "" {
+		return fmt.Errorf("API Error (%d): %s - %s", resp.StatusCode, apiErr.Code, apiErr.Message)
+	}
+
 	// Returning the error stops the command execution and displays the message
-	return fmt.Errorf("API Error (%s): %s", resp.Status, string(body))
+	return fmt.Errorf("request failed with status: %s", resp.Status)
 }
