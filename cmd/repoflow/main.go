@@ -7,9 +7,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"repoflow/internal/cli"
-	"repoflow/internal/factory"
-	"repoflow/pkg/config"
+	"github.com/fe80/go-repoflow/internal/cli"
+	"github.com/fe80/go-repoflow/internal/factory"
+	"github.com/fe80/go-repoflow/pkg/config"
 )
 
 var (

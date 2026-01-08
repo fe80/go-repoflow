@@ -1,14 +1,14 @@
 package factory
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"fmt"
-	"strings"
 	"io"
 	"net/http"
+	"strings"
 
-	"repoflow/pkg/client"
+	"github.com/fe80/go-repoflow/pkg/client"
 )
 
 // handleResponse processes the API response.

@@ -5,8 +5,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"repoflow/internal/factory"
-	"repoflow/pkg/client"
+	"github.com/fe80/go-repoflow/internal/factory"
+	"github.com/fe80/go-repoflow/pkg/client"
 )
 
 // RepositoryManager handles the state and configuration for workspace commands

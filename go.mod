@@ -1,4 +1,4 @@
-module repoflow
+module github.com/fe80/go-repoflow
 
 go 1.25.5
 
@@ -8,6 +8,7 @@ require (
 )
 
 require (
+	github.com/fe80/go-repoflow v0.0.0-20260106071934-7626b820b5ff // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
 	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
