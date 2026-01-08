@@ -1,9 +1,12 @@
 package client
 
 import (
+	"bytes"
 	"fmt"
+	"encoding/json"
 	"net/http"
 	"time"
+	"io"
 )
 
 type Client struct {
@@ -34,4 +37,48 @@ func NewClient(baseUrl string, token string) *Client {
 func (c *Client) setHeaders(req *http.Request) {
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.Token))
 	req.Header.Set("Content-Type", "application/json")
+}
+
+func (c *Client) DoRequest(method, path string, body interface{}, result interface{}) error {
+	var bodyReader io.Reader
+
+	if body != nil {
+		jsonBody, err := json.Marshal(body)
+		if err != nil {
+			return fmt.Errorf("failed to marshal request body: %w", err)
+		}
+		bodyReader = bytes.NewBuffer(jsonBody)
+	}
+
+	url := fmt.Sprintf("%s%s", c.BaseURL, path)
+	req, err := http.NewRequest(method, url, bodyReader)
+	if err != nil {
+		return fmt.Errorf("failed to create request: %w", err)
+	}
+
+	req.Header.Set("Accept", "application/json")
+	if body != nil {
+		req.Header.Set("Content-Type", "application/json")
+	}
+	if c.Token != "" {
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.Token))
+	}
+
+	resp, err := c.HTTPClient.Do(req)
+	if err != nil {
+		return fmt.Errorf("request failed: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		return fmt.Errorf("api error: status %d (%s)", resp.StatusCode, http.StatusText(resp.StatusCode))
+	}
+
+	if result != nil && resp.StatusCode != http.StatusNoContent {
+		if err := json.NewDecoder(resp.Body).Decode(result); err != nil {
+			return fmt.Errorf("failed to decode response: %w", err)
+		}
+	}
+
+	return nil
 }
