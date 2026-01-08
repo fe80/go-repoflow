@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"bytes"
 	"fmt"
+	"strings"
 	"io"
 	"net/http"
 
@@ -37,6 +38,11 @@ func (u *Utils) HandleResponse(resp *http.Response) error {
 	var apiErr client.APIError
 	if err := json.Unmarshal(body, &apiErr); err == nil && apiErr.Message != "" {
 		return fmt.Errorf("API Error (%d): %s - %s", resp.StatusCode, apiErr.Code, apiErr.Message)
+	}
+
+	var apiErrs client.APIErrors
+	if err := json.Unmarshal(body, &apiErrs); err == nil && len(apiErrs.Errors) > 0 {
+		return fmt.Errorf("API Errors (%d): %s", resp.StatusCode, strings.Join(apiErrs.Errors, "; "))
 	}
 
 	// Returning the error stops the command execution and displays the message

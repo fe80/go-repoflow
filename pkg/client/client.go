@@ -17,6 +17,10 @@ type APIError struct {
 	Message string `json:"message"`
 }
 
+type APIErrors struct {
+	Errors []string `json:"errors"`
+}
+
 func NewClient(baseUrl string, token string) *Client {
 	return &Client{
 		BaseURL: baseUrl,
