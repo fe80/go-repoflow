@@ -12,6 +12,7 @@ import (
 // RepositoryManager handles the state and configuration for workspace commands
 type RepositoryManager struct {
 	*factory.Utils
+	apiClient *client.Client
 	childRepositoryIds                []string
 	workspace                         string
 	packageType                       string
@@ -26,7 +27,10 @@ type RepositoryManager struct {
 
 // RepositoryCmd initializes the parent command and its subcommands
 func RepositoryCmd(u *factory.Utils) *cobra.Command {
-	m := &RepositoryManager{Utils: u}
+	m := &RepositoryManager{
+		Utils: u,
+		apiClient: factory.GetClient(u.Cfg),
+	}
 
 	// Main repository command
 	var repositoryCmd = &cobra.Command{
@@ -179,8 +183,7 @@ func RepositoryCmd(u *factory.Utils) *cobra.Command {
 
 // --- Runners Implementation ---
 func (m *RepositoryManager) repositoryList(cmd *cobra.Command, args []string) error {
-	apiClient := factory.GetClient(m.Cfg)
-	resp, err := apiClient.ListRepositories(m.workspace)
+	resp, err := m.apiClient.ListRepositories(m.workspace)
 	if err != nil {
 		return err
 	}
@@ -195,8 +198,7 @@ func (m *RepositoryManager) repositoryList(cmd *cobra.Command, args []string) er
 }
 
 func (m *RepositoryManager) repositoryGet(cmd *cobra.Command, args []string) error {
-	apiClient := factory.GetClient(m.Cfg)
-	resp, err := apiClient.GetRepository(m.workspace, args[0])
+	resp, err := m.apiClient.GetRepository(m.workspace, args[0])
 	if err != nil {
 		return err
 	}
@@ -211,8 +213,7 @@ func (m *RepositoryManager) repositoryGet(cmd *cobra.Command, args []string) err
 }
 
 func (m *RepositoryManager) repositoryDelete(cmd *cobra.Command, args []string) error {
-	apiClient := factory.GetClient(m.Cfg)
-	resp, err := apiClient.DeleteRepository(m.workspace, args[0])
+	resp, err := m.apiClient.DeleteRepository(m.workspace, args[0])
 	if err != nil {
 		return err
 	}
@@ -232,7 +233,6 @@ func (m *RepositoryManager) repositoryDelete(cmd *cobra.Command, args []string) 
 }
 
 func (m *RepositoryManager) repositoryCreate(cmd *cobra.Command, args []string, store string) error {
-	apiClient := factory.GetClient(m.Cfg)
 	name := args[0]
 
 	var opts any
@@ -268,7 +268,7 @@ func (m *RepositoryManager) repositoryCreate(cmd *cobra.Command, args []string, 
 		return fmt.Errorf("Unsuported store store type: %s", store)
 	}
 
-	resp, err := apiClient.CreateRepository(m.workspace, store, opts)
+	resp, err := m.apiClient.CreateRepository(m.workspace, store, opts)
 	if err != nil {
 		return err
 	}
@@ -302,10 +302,9 @@ func (m *RepositoryManager) repositoryCreate(cmd *cobra.Command, args []string, 
 }
 
 func (m *RepositoryManager) repositoryDeleteContent(cmd *cobra.Command, args []string) error {
-	apiClient := factory.GetClient(m.Cfg)
 	name := args[0]
 
-	resp, err := apiClient.DeleteRepositoryContent(m.workspace, name)
+	resp, err := m.apiClient.DeleteRepositoryContent(m.workspace, name)
 	if err != nil {
 		return err
 	}
