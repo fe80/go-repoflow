@@ -39,34 +39,34 @@ type WorkspaceOptions struct {
 
 // ListWorkspaces retrieves all available workspaces
 // GET /1/workspaces
-func (c *Client) ListWorkspaces() ([]Workspaces, error) {
+func (c *Client) ListWorkspaces() (*[]Workspaces, error) {
 	var ws []Workspaces
 	err := c.DoRequest(http.MethodGet, WorkspacesEndpoint, nil, &ws)
-	return ws, err
+	return &ws, err
 }
 
 // CreateWorkspace creates a new workspace with the given options
 // POST /1/workspaces
-func (c *Client) CreateWorkspace(opts WorkspaceOptions) (Workspace, error) {
+func (c *Client) CreateWorkspace(opts WorkspaceOptions) (*Workspace, error) {
 	var ws Workspace
 	err := c.DoRequest(http.MethodPost, WorkspacesEndpoint, opts, &ws)
-	return ws, err
+	return &ws, err
 }
 
 // GetWorkspace retrieves metadata for a specific workspace
 // GET /1/workspaces/:id
-func (c *Client) GetWorkspace(id string) (Workspace, error) {
+func (c *Client) GetWorkspace(id string) (*Workspace, error) {
 	var ws Workspace
 	endpoint := fmt.Sprintf("%s/%s", WorkspacesEndpoint, id)
 	err := c.DoRequest(http.MethodGet, endpoint, nil, &ws)
-	return ws, err
+	return &ws, err
 }
 
 // DeleteWorkspace removes a workspace by its ID
 // DELETE /1/workspaces/:id
-func (c *Client) DeleteWorkspace(id string) (Workspace, error) {
+func (c *Client) DeleteWorkspace(id string) (*Workspace, error) {
 	var ws Workspace
 	endpoint := fmt.Sprintf("%s/%s", WorkspacesEndpoint, id)
 	err := c.DoRequest(http.MethodDelete, endpoint, nil, &ws)
-	return ws, err
+	return &ws, err
 }

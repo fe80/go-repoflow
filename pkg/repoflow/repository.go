@@ -84,54 +84,54 @@ type RepostotryDelete struct {
 
 // ListRepositories retrieves all available repository
 // GET /1/workspaces/:workspace/repositories
-func (c *Client) ListRepositories(workspace string) ([]Repositories, error) {
+func (c *Client) ListRepositories(workspace string) (*[]Repositories, error) {
 	var rep []Repositories
 	endpoint := fmt.Sprintf("%s/%s%s", WorkspacesEndpoint, workspace, RepositoryEndpoint)
 	err := c.DoRequest(http.MethodGet, endpoint, nil, &rep)
-	return rep, err
+	return &rep, err
 }
 
 // GetRepository retrieves metadata for a specific repository
 // GET /1/workspaces/:workspace/repositories/:id
-func (c *Client) GetRepository(workspace string, id string) (Repository, error) {
+func (c *Client) GetRepository(workspace string, id string) (*Repository, error) {
 	var rep Repository
 	endpoint := fmt.Sprintf("%s/%s%s/%s", WorkspacesEndpoint, workspace, RepositoryEndpoint, id)
 	err := c.DoRequest(http.MethodGet, endpoint, nil, &rep)
-	return rep, err
+	return &rep, err
 }
 
 // ListRepositoryPackages list all available package in a repository
 // GET /1/workspaces/:workspace/repositories/:id/packages
-func (c *Client) ListRepositoryPackages(workspace string, id string) (RepositoryPackages, error) {
+func (c *Client) ListRepositoryPackages(workspace string, id string) (*RepositoryPackages, error) {
 	var rep RepositoryPackages
 	endpoint := fmt.Sprintf("%s/%s%s/%s/packages", WorkspacesEndpoint, workspace, RepositoryEndpoint, id)
 	err := c.DoRequest(http.MethodGet, endpoint, nil, &rep)
-	return rep, err
+	return &rep, err
 }
 
 // CreateRepository create a new repository with the given options
 // POST /1/workspaces/:workspace/repositories/:store
-func (c *Client) CreateRepository(workspace string, store string, opts any) (Repositories, error) {
+func (c *Client) CreateRepository(workspace string, store string, opts any) (*Repositories, error) {
 	var rep Repositories
 	endpoint := fmt.Sprintf("%s/%s%s/%s", WorkspacesEndpoint, workspace, RepositoryEndpoint, store)
 	err := c.DoRequest(http.MethodPost, endpoint, opts, &rep)
-	return rep, err
+	return &rep, err
 }
 
 // DeleteRepository removes a workspace by its ID
 // DELETE /1/workspaces/:id/repositories/:id
-func (c *Client) DeleteRepository(workspace string, id string) (RepostotryDelete, error) {
+func (c *Client) DeleteRepository(workspace string, id string) (*RepostotryDelete, error) {
 	var rep RepostotryDelete
 	endpoint := fmt.Sprintf("%s/%s%s/%s", WorkspacesEndpoint, workspace, RepositoryEndpoint, id)
 	err := c.DoRequest(http.MethodDelete, endpoint, nil, &rep)
-	return rep, err
+	return &rep, err
 }
 
 // DeleteRepositoryContent removes a workspace by its ID
 // DELETE /1/workspaces/:id/repositories/:id
-func (c *Client) DeleteRepositoryContent(workspace string, id string) (RepostotryDelete, error) {
+func (c *Client) DeleteRepositoryContent(workspace string, id string) (*RepostotryDelete, error) {
 	var rep RepostotryDelete
 	endpoint := fmt.Sprintf("%s/%s%s/%s/content", WorkspacesEndpoint, workspace, RepositoryEndpoint, id)
 	err := c.DoRequest(http.MethodDelete, endpoint, nil, &rep)
-	return rep, err
+	return &rep, err
 }
