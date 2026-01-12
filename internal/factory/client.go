@@ -1,10 +1,10 @@
 package factory
 
 import (
-	"github.com/fe80/go-repoflow/pkg/client"
+	"github.com/fe80/go-repoflow/pkg/repoflow"
 	"github.com/fe80/go-repoflow/pkg/config"
 )
 
-func GetClient(cfg *config.Config) *client.Client {
-	return client.NewClient(cfg.URL, cfg.Token)
+func GetClient(cfg *config.Config) *repoflow.Client {
+	return repoflow.NewClient(cfg.URL, cfg.Token)
 }

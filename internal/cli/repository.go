@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/fe80/go-repoflow/internal/factory"
-	"github.com/fe80/go-repoflow/pkg/client"
+	"github.com/fe80/go-repoflow/pkg/repoflow"
 )
 
 // RepositoryManager handles the state and configuration for workspace commands
@@ -215,13 +215,13 @@ func (m *RepositoryManager) repositoryCreate(cmd *cobra.Command, args []string, 
 
 	switch store {
 	case "local":
-		opts = client.RepositoryOptions{
+		opts = repoflow.RepositoryOptions{
 			Name:        name,
 			PackageType: m.packageType,
 		}
 
 	case "remote":
-		opts = client.RepositoryRemoteOptions{
+		opts = repoflow.RepositoryRemoteOptions{
 			Name:                              name,
 			PackageType:                       m.packageType,
 			RemoteRepositoryUrl:               m.remoteRepositoryUrl,
@@ -233,7 +233,7 @@ func (m *RepositoryManager) repositoryCreate(cmd *cobra.Command, args []string, 
 		}
 
 	case "virtual":
-		opts = client.RepositoryVirtualOptions{
+		opts = repoflow.RepositoryVirtualOptions{
 			Name:                    name,
 			PackageType:             m.packageType,
 			ChildRepositoryIds:      m.childRepositoryIds,
