@@ -43,9 +43,12 @@ type Repository struct {
 	UploadTargetLocalRepository       UploadTargetLocalRepository `json:"uploadTargetLocalRepository"`
 	ChildRepositories                 []ChildRepository           `json:"childRepositories"`
 	RemoteRepositoryUrl               *string                     `json:"remoteRepositoryUrl,omitempty"`
+	RemoteRepositoryUsername          *string                     `json:"remoteRepositoryUsername,omitempty"`
+	RemoteRepositoryPassword          *string                     `json:"remoteRepositoryPassword,omitempty"`
 	IsRemoteCacheEnabled              bool                        `json:"isRemoteCacheEnabled"`
 	FileCacheTimeTillRevalidation     *int                        `json:"fileCacheTimeTillRevalidation,omitempty"`
 	MetadataCacheTimeTillRevalidation *int                        `json:"metadataCacheTimeTillRevalidation,omitempty"`
+	UploadLocalRepositoryId           *string                     `json:"uploadLocalRepositoryId,omitempty"`
 }
 
 type RepositoryOptions struct {
@@ -114,8 +117,8 @@ func (c *Client) ListRepositoryPackages(workspace string, id string) (*Repositor
 
 // CreateRepository create a new repository with the given options
 // POST /1/workspaces/:workspace/repositories/:store
-func (c *Client) CreateRepository(workspace string, store string, opts any) (*Repositories, error) {
-	var rep Repositories
+func (c *Client) CreateRepository(workspace string, store string, opts any) (*Repository, error) {
+	var rep Repository
 	endpoint := fmt.Sprintf("%s/%s%s/%s", WorkspacesEndpoint, workspace, RepositoryEndpoint, store)
 	err := c.DoRequest(http.MethodPost, endpoint, opts, &rep)
 	return &rep, err
@@ -123,8 +126,8 @@ func (c *Client) CreateRepository(workspace string, store string, opts any) (*Re
 
 // CreateLocalRepository create a new repository with the given options
 // POST /1/workspaces/:workspace/repositories/local
-func (c *Client) CreateLocalRepository(workspace string, opts RepositoryOptions) (*Repositories, error) {
-	var rep Repositories
+func (c *Client) CreateLocalRepository(workspace string, opts RepositoryOptions) (*Repository, error) {
+	var rep Repository
 	endpoint := fmt.Sprintf("%s/%s%s/local", WorkspacesEndpoint, workspace, RepositoryEndpoint)
 	err := c.DoRequest(http.MethodPost, endpoint, opts, &rep)
 	return &rep, err
@@ -132,8 +135,8 @@ func (c *Client) CreateLocalRepository(workspace string, opts RepositoryOptions)
 
 // CreateRemoteRepository create a new repository with the given options
 // POST /1/workspaces/:workspace/repositories/remote
-func (c *Client) CreateRemoteRepository(workspace string, opts RepositoryRemoteOptions) (*Repositories, error) {
-	var rep Repositories
+func (c *Client) CreateRemoteRepository(workspace string, opts RepositoryRemoteOptions) (*Repository, error) {
+	var rep Repository
 	endpoint := fmt.Sprintf("%s/%s%s/remote", WorkspacesEndpoint, workspace, RepositoryEndpoint)
 	err := c.DoRequest(http.MethodPost, endpoint, opts, &rep)
 	return &rep, err
@@ -141,8 +144,8 @@ func (c *Client) CreateRemoteRepository(workspace string, opts RepositoryRemoteO
 
 // CreateVirtualRepository create a new repository with the given options
 // POST /1/workspaces/:workspace/repositories/virtual
-func (c *Client) CreateVirtualRepository(workspace string, opts RepositoryVirtualOptions) (*Repositories, error) {
-	var rep Repositories
+func (c *Client) CreateVirtualRepository(workspace string, opts RepositoryVirtualOptions) (*Repository, error) {
+	var rep Repository
 	endpoint := fmt.Sprintf("%s/%s%s/virtual", WorkspacesEndpoint, workspace, RepositoryEndpoint)
 	err := c.DoRequest(http.MethodPost, endpoint, opts, &rep)
 	return &rep, err
