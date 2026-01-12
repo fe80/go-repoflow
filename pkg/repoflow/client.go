@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"encoding/json"
 	"net/http"
+	"strings"
 	"time"
 	"io"
 )
@@ -39,6 +40,13 @@ func (c *Client) setHeaders(req *http.Request) {
 	req.Header.Set("Content-Type", "application/json")
 }
 
+func (e *APIErrors) Error() string {
+	if len(e.Errors) == 0 {
+		return "unknown api error"
+	}
+	return fmt.Sprintf("api error: %v", strings.Join(e.Errors, "; "))
+}
+
 func (c *Client) DoRequest(method, path string, body interface{}, result interface{}) error {
 	var bodyReader io.Reader
 
@@ -71,6 +79,15 @@ func (c *Client) DoRequest(method, path string, body interface{}, result interfa
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
+		var errs APIErrors
+		bodyBytes, _ := io.ReadAll(resp.Body)
+
+		if len(bodyBytes) > 0 {
+			if err := json.Unmarshal(bodyBytes, &errs); err == nil && len(errs.Errors) > 0 {
+				return &errs
+			}
+		}
+
 		return fmt.Errorf("api error: status %d (%s)", resp.StatusCode, http.StatusText(resp.StatusCode))
 	}
 
