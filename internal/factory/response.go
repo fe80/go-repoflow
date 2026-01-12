@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/fe80/go-repoflow/pkg/client"
+	"github.com/fe80/go-repoflow/pkg/repoflow"
 )
 
 // handleResponse processes the API response.
@@ -35,12 +35,12 @@ func (u *Utils) HandleResponse(resp *http.Response) error {
 		return nil
 	}
 
-	var apiErr client.APIError
+	var apiErr repoflow.APIError
 	if err := json.Unmarshal(body, &apiErr); err == nil && apiErr.Message != "" {
 		return fmt.Errorf("API Error (%d): %s - %s", resp.StatusCode, apiErr.Code, apiErr.Message)
 	}
 
-	var apiErrs client.APIErrors
+	var apiErrs repoflow.APIErrors
 	if err := json.Unmarshal(body, &apiErrs); err == nil && len(apiErrs.Errors) > 0 {
 		return fmt.Errorf("API Errors (%d): %s", resp.StatusCode, strings.Join(apiErrs.Errors, "; "))
 	}

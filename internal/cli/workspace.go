@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/fe80/go-repoflow/internal/factory"
-	"github.com/fe80/go-repoflow/pkg/client"
+	"github.com/fe80/go-repoflow/pkg/repoflow"
 )
 
 // WorkspaceManager handles the state and configuration for workspace commands
@@ -129,7 +129,7 @@ func (m *WorkspaceManager) workspaceDelete(cmd *cobra.Command, args []string) er
 func (m *WorkspaceManager) workspaceCreate(cmd *cobra.Command, args []string) error {
 	name := args[0]
 
-	opts := client.WorkspaceOptions{
+	opts := repoflow.WorkspaceOptions{
 		Name:           name,
 		PackageLimit:   m.packageLimit,
 		BandwidthLimit: m.bandwidthLimit,
