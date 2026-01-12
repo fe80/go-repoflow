@@ -255,8 +255,6 @@ func (m *RepositoryManager) repositoryCreate(cmd *cobra.Command, args []string, 
 	}
 
 	return factory.HandleOutput(m.Utils, data)
-
-	return nil
 }
 
 func (m *RepositoryManager) repositoryDeleteContent(cmd *cobra.Command, args []string) error {

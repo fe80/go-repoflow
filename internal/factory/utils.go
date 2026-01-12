@@ -1,8 +1,8 @@
 package factory
 
 import (
-	"github.com/fe80/go-repoflow/pkg/repoflow"
 	"github.com/fe80/go-repoflow/pkg/config"
+	"github.com/fe80/go-repoflow/pkg/repoflow"
 	"log/slog"
 )
 

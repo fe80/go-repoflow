@@ -2,12 +2,12 @@ package repoflow
 
 import (
 	"bytes"
-	"fmt"
 	"encoding/json"
+	"fmt"
+	"io"
 	"net/http"
 	"strings"
 	"time"
-	"io"
 )
 
 type Client struct {
