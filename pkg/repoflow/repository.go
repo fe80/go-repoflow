@@ -43,7 +43,7 @@ type Repository struct {
 	UploadTargetLocalRepository       UploadTargetLocalRepository `json:"uploadTargetLocalRepository"`
 	ChildRepositories                 []ChildRepository           `json:"childRepositories"`
 	RemoteRepositoryUrl               *string                     `json:"remoteRepositoryUrl,omitempty"`
-	IsRemoteCacheEnabled              *string                     `json:"isRemoteCacheEnabled,omitempty"`
+	IsRemoteCacheEnabled              bool                        `json:"isRemoteCacheEnabled"`
 	FileCacheTimeTillRevalidation     *int                        `json:"fileCacheTimeTillRevalidation,omitempty"`
 	MetadataCacheTimeTillRevalidation *int                        `json:"metadataCacheTimeTillRevalidation,omitempty"`
 }
@@ -65,11 +65,11 @@ type RepositoryRemoteOptions struct {
 	Name                              string `json:"name"`
 	PackageType                       string `json:"packageType"`
 	RemoteRepositoryUrl               string `json:"remoteRepositoryUrl"`
-	RemoteRepositoryUsername          string `json:"remoteRepositoryUsername"`
-	RemoteRepositoryPassword          string `json:"remoteRepositoryPassword"`
 	IsRemoteCacheEnabled              bool   `json:"isRemoteCacheEnabled"`
-	FileCacheTimeTillRevalidation     *int   `json:"fileCacheTimeTillRevalidation"`
-	MetadataCacheTimeTillRevalidation *int   `json:"metadataCacheTimeTillRevalidation"`
+	RemoteRepositoryUsername          string `json:"remoteRepositoryUsername,omitempty"`
+	RemoteRepositoryPassword          string `json:"remoteRepositoryPassword,omitempty"`
+	FileCacheTimeTillRevalidation     *int   `json:"fileCacheTimeTillRevalidation,omitempty"`
+	MetadataCacheTimeTillRevalidation *int   `json:"metadataCacheTimeTillRevalidation,omitempty"`
 }
 
 // RepositoryVirtualRemote defines the payload for creating a virtual repository

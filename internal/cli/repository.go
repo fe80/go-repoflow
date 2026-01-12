@@ -112,10 +112,10 @@ func RepositoryCmd(u *factory.Utils) *cobra.Command {
 		&m.remoteRepositoryUrl, "remote-url", "r", "", "URL of the remote repository",
 	)
 	createRemoteCmd.Flags().StringVarP(
-		&m.remoteRepositoryUsername, "remote-username", "u", "", "URL of the remote repository.",
+		&m.remoteRepositoryUsername, "remote-username", "u", "", "Username of the remote repository.",
 	)
 	createRemoteCmd.Flags().StringVarP(
-		&m.remoteRepositoryPassword, "remote-password", "p", "", "Username for the remote repository.",
+		&m.remoteRepositoryPassword, "remote-password", "p", "", "Password for the remote repository.",
 	)
 	createRemoteCmd.Flags().BoolVarP(
 		&m.isRemoteCacheEnabled, "cache", "c", false, "Whether caching is enabled.",
@@ -130,7 +130,6 @@ func RepositoryCmd(u *factory.Utils) *cobra.Command {
 	)
 
 	createRemoteCmd.MarkFlagRequired("remote-url")
-	createRemoteCmd.MarkFlagRequired("remote-username")
 
 	createRemoteCmd.PreRunE = func(cmd *cobra.Command, args []string) error {
 		if cmd.Flags().Changed("file-cache-ttr") && fileCacheTimeTillRevalidation >= 0 {

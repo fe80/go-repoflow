@@ -38,6 +38,7 @@ func NewClient(baseUrl string, token string) *Client {
 func (c *Client) setHeaders(req *http.Request) {
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.Token))
 	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json")
 }
 
 func (e *APIErrors) Error() string {
@@ -71,6 +72,7 @@ func (c *Client) DoRequest(method, path string, body interface{}, result interfa
 	if c.Token != "" {
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.Token))
 	}
+	req.Header.Set("Accept", "application/json")
 
 	resp, err := c.HTTPClient.Do(req)
 	if err != nil {
