@@ -80,7 +80,7 @@ type RepositoryVirtualOptions struct {
 	Name                    string   `json:"name"`
 	PackageType             string   `json:"packageType"`
 	ChildRepositoryIds      []string `json:"childRepositoryIds"`
-	UploadLocalRepositoryId string  `json:"uploadLocalRepositoryId,omitempty"`
+	UploadLocalRepositoryId string   `json:"uploadLocalRepositoryId,omitempty"`
 }
 
 type RepostotryDelete struct {
