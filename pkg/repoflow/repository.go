@@ -71,8 +71,8 @@ type RepositoryRemoteOptions struct {
 	IsRemoteCacheEnabled              bool   `json:"isRemoteCacheEnabled"`
 	RemoteRepositoryUsername          string `json:"remoteRepositoryUsername,omitempty"`
 	RemoteRepositoryPassword          string `json:"remoteRepositoryPassword,omitempty"`
-	FileCacheTimeTillRevalidation     *int   `json:"fileCacheTimeTillRevalidation,omitempty"`
-	MetadataCacheTimeTillRevalidation *int   `json:"metadataCacheTimeTillRevalidation,omitempty"`
+	FileCacheTimeTillRevalidation     *int   `json:"fileCacheTimeTillRevalidation"`
+	MetadataCacheTimeTillRevalidation *int   `json:"metadataCacheTimeTillRevalidation"`
 }
 
 // RepositoryVirtualRemote defines the payload for creating a virtual repository
@@ -80,7 +80,7 @@ type RepositoryVirtualOptions struct {
 	Name                    string   `json:"name"`
 	PackageType             string   `json:"packageType"`
 	ChildRepositoryIds      []string `json:"childRepositoryIds"`
-	UploadLocalRepositoryId *string  `json:"uploadLocalRepositoryId,omitempty"`
+	UploadLocalRepositoryId string  `json:"uploadLocalRepositoryId,omitempty"`
 }
 
 type RepostotryDelete struct {

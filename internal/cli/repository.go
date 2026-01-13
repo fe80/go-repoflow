@@ -236,7 +236,7 @@ func (m *RepositoryManager) repositoryCreate(cmd *cobra.Command, args []string, 
 			Name:                    name,
 			PackageType:             m.packageType,
 			ChildRepositoryIds:      m.childRepositoryIds,
-			UploadLocalRepositoryId: &m.uploadLocalRepositoryId,
+			UploadLocalRepositoryId: m.uploadLocalRepositoryId,
 		}
 
 	default:
