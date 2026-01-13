@@ -71,8 +71,8 @@ type RepositoryRemoteOptions struct {
 	IsRemoteCacheEnabled              bool   `json:"isRemoteCacheEnabled"`
 	RemoteRepositoryUsername          string `json:"remoteRepositoryUsername,omitempty"`
 	RemoteRepositoryPassword          string `json:"remoteRepositoryPassword,omitempty"`
-	FileCacheTimeTillRevalidation     *int   `json:"fileCacheTimeTillRevalidation"`
-	MetadataCacheTimeTillRevalidation *int   `json:"metadataCacheTimeTillRevalidation"`
+	FileCacheTimeTillRevalidation     *int   `json:"fileCacheTimeTillRevalidation,omitempty"`
+	MetadataCacheTimeTillRevalidation *int   `json:"metadataCacheTimeTillRevalidation,omitempty"`
 }
 
 // RepositoryVirtualRemote defines the payload for creating a virtual repository
